@@ -6,14 +6,5 @@ module.exports = defineConfig({
       entry: 'src/main.js',
       title: process.env.VUE_APP_TITLE,
     },
-  },  
-  css: {
-    loaderOptions: {
-      css: {
-        modules: {
-          auto: () => true
-        }
-      }
-    }
-  }  
+  }
 })

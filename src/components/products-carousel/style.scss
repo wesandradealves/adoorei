@@ -1,0 +1,24 @@
+@import url('https://ismail9k.github.io/vue3-carousel/assets/style.0cf6cb68.css');
+
+.carousel__slide {
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;    
+    padding: 0 5px;
+    .single-product {
+        height: 100%;
+        width: 100%;
+        display: inherit;
+        flex-flow: inherit;
+        justify-content: inherit;
+        .product-f-image {
+            flex: 0 0 auto;
+            height: 300px;
+            img {
+                height: 100%;
+                width: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+}

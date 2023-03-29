@@ -12,13 +12,18 @@
 <script>
 import AppHeader from './components/header'
 import AppFooter from './components/footer'
+import { useStore } from 'vuex'
 
 export default {
   name: 'App',
   components: {
     AppFooter,
     AppHeader
-  }
+  },
+  mounted() {
+    const store = useStore()
+    store.dispatch('GetAllProducts')
+  },
 }
 </script>
 <style src="./style.scss" lang="scss"></style>

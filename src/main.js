@@ -8,4 +8,4 @@ import { createMetaManager } from 'vue-meta'
 import { store } from './store'
 import router from './router'
 
-createApp(App).use(createMetaManager()).use(store).use(router).mount('#app')
+createApp(App).use(createMetaManager()).use(router).use(store).mount('#app')

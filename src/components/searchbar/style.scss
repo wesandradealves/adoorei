@@ -1,0 +1,9 @@
+.searchbar {
+    border: 2px whitesmoke solid;
+    input, button {
+        border: 0;
+        background-color: transparent;
+        outline: 0 !important;
+        font-size: 1.4rem;
+    }
+}

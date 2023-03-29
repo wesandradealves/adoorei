@@ -5,7 +5,7 @@ $(document).ready(function($){
 	$(".mainmenu-area").sticky({topSpacing:0});
     
     
-    $('.product-carousel').owlCarousel({
+    $('.products-carousel').owlCarousel({
         loop:true,
         nav:true,
         margin:20,
@@ -69,15 +69,15 @@ $(document).ready(function($){
     });    
     
     // jQuery Scroll effect
-    $('.navbar-nav li a, .scroll-to-up').bind('click', function(event) {
-        var $anchor = $(this);
-        var headerH = $('.header-area').outerHeight();
-        $('html, body').stop().animate({
-            scrollTop : $($anchor.attr('href')).offset().top - headerH + "px"
-        }, 1200, 'easeInOutExpo');
+    // $('.navbar-nav li a, .scroll-to-up').bind('click', function(event) {
+    //     var $anchor = $(this);
+    //     var headerH = $('.header-area').outerHeight();
+    //     $('html, body').stop().animate({
+    //         scrollTop : $($anchor.attr('href')).offset().top - headerH + "px"
+    //     }, 1200, 'easeInOutExpo');
 
-        event.preventDefault();
-    });    
+    //     event.preventDefault();
+    // });    
     
     // Bootstrap ScrollPSY
     $('body').scrollspy({ 

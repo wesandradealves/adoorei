@@ -1,0 +1,11 @@
+.single-product {
+    .product-f-image {
+        flex: 0 0 auto;
+        height: 300px;
+        img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
+    }
+}

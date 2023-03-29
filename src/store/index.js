@@ -3,124 +3,76 @@ import { createStore } from 'vuex'
 export const store = createStore({
   state () {
     return {
-        // page: 1,
-        // keyword: null,
-        // info: {},
-        // loading: false,
-        // characters: null
+        products: null,
+        cart: []
     }
   },
   mutations: {
-    // setKeyword (state, payload) {
-    //   state.keyword = payload
-    // },    
-    // setPage (state, payload) {
-    //     state.page = payload
-    // },
-    // setInfo (state, payload) {
-    //     state.info = payload
-    // },
-    // setLoading (state) {
-    //     state.loading = !state.loading
-    // },
-    // setCharacters (state, payload) {
-    //     state.characters = payload
-    // }    
+    pushProduct (state, payload) {
+      state.cart.push(payload)
+    },
+    increaseQuantity (state, payload) {
+      const cartItem = state.cart.find((item) => item.id == payload.id)
+      cartItem.quantity = payload.quantity
+    },    
+    setData (state, payload) {
+      state.products = payload
+    }    
   },
   actions: {
-    // async CharactersByName (context, payload) {  
-    //   context.commit('setLoading')
+    async GetAllProducts (context) {  
+        try {
+            const response = await fetch(`${process.env.VUE_APP_BASE_API}/products`).then((res) => res.json())
+            if(response) context.commit('setData', response)
+        } catch (error) {
+          console.log(error);
+        } finally {
+          // console.log(context.state)
+        }      
+    },     
+    async GetSingleProduct (payload) {  
+      try {
+          const response = await fetch(`${process.env.VUE_APP_BASE_API}/products/${payload}`).then((res) => res.json())
+          return response
+      } catch (error) {
+        console.log(error);
+      } finally {
+        // console.log(context.state)
+      }      
+    }, 
+    addToCart (context, payload) {  
+      let cart = context.state.cart;
+      let item = cart.find(i => i.id == payload.id)
 
-    //   try {
-    //       const response = await fetch(process.env.VUE_APP_BASE_GRAPHQL_API, {
-    //           method: 'POST',
-    //           headers: {
-    //             'Content-Type': 'application/json',
-    //           },
-    //           body: JSON.stringify({
-    //             query: `
-    //             query Characters {
-    //               characters(page: ${context.state.page}, filter: { name: "${payload}" }) {
-    //                   results {
-    //                     episode {
-    //                       name,
-    //                       id,
-    //                       air_date,
-    //                       episode
-    //                     }
-    //                     id
-    //                     image
-    //                     name
-    //                   }
-    //                   info {
-    //                     count
-    //                     next
-    //                     pages
-    //                     prev
-    //                   }
-    //                 }
-    //             }`,
-    //           }),
-    //       }).then((res) => res.json())
-          
-    //       if(response.data) {
-    //         context.commit('setInfo', response.data.characters.info)
-    //         context.commit('setCharacters', response.data.characters.results)
-    //       } else {
-    //         context.dispatch('Characters')
-    //       }
-    //   } catch (error) {
-    //       console.log(error);
-    //   } finally {
-    //       context.commit('setLoading')
-    //   }      
-    // },
-    // async Characters (context) {  
-    //     context.commit('setLoading')
+      if(!item) context.commit('pushProduct', payload)
+      else {
+        item.quantity = payload.quantity
+        context.commit('increaseQuantity', item)
+      }
+    }, 
+    removeFromCart (context, payload) {  
+      let cart = context.state.cart;
+      let item = cart.find(i => i.id == payload.id)
 
-    //     try {
-    //         const response = await fetch(process.env.VUE_APP_BASE_GRAPHQL_API, {
-    //             method: 'POST',
-    //             headers: {
-    //               'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({
-    //               query: `
-    //               query Characters {
-    //                 characters(page: ${context.state.page}) {
-    //                     results {
-    //                       episode {
-    //                         name,
-    //                         id,
-    //                         air_date,
-    //                         episode
-    //                       }
-    //                       id
-    //                       image
-    //                       name
-    //                     }
-    //                     info {
-    //                       count
-    //                       next
-    //                       pages
-    //                       prev
-    //                     }
-    //                   }
-    //               }`,
-    //             }),
-    //         }).then((res) => res.json())
-            
-    //         if(response.data) {
-    //           context.commit('setInfo', response.data.characters.info)
-    //           context.commit('setCharacters', response.data.characters.results)
-    //         }
-    //     } catch (error) {
-    //         console.log(error);
-    //     } finally {
-    //         context.commit('setLoading')
-    //     }      
-    // }, Paginate (context, payload) { 
-    //   context.commit('setPage', payload)
-    // }
+      if(item) context.state.cart = cart.filter(function(i) { return i.id !== item.id })
+    }
+  },
+  getters: {
+    categories (state) {
+      var _ = require('lodash');
+
+      if(state.products) {
+        return _.uniqBy(state.products.map((item) => {
+          var slugify = require('slugify')
+
+          return {
+            title: item.category,
+            uri: slugify(item.category)
+          }
+        }, []), 'title');
+      }
+
+      return [];
+    }      
   }
 })
