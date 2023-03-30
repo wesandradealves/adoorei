@@ -126,36 +126,18 @@
         </div>
     </section> <!-- End promo area -->    
 
-    <section class="maincontent-area">
-        <div class="container pt-5">
-            <ul class="d-flex flex-wrap product-carousel row p-0">
-                <li class="single-product col-12 col-md-6 col-lg-4 align-items-stretch pb-4" v-for="item in $store.state.products" :key="item.id">
-                    <div class="product-f-image">
-                        <img :src="item.image" :alt="item.description">
-                        <div class="product-hover">
-                            <!-- <a :href="`#${item.id}`" class="add-to-cart-link"><i class="fa fa-shopping-cart"></i> Add to
-                                cart</a> -->
-                            <router-link :class="'view-details-link'" :to="`/product/${item.id}`"><i class="fa fa-link"></i> See details</router-link>
-                        </div>
-                    </div>
-
-                    <h2>
-                        <router-link :to="`/product/${item.id}`">{{item.title}}</router-link>
-                    </h2>
-
-                    <div class="product-carousel-price">
-                        <ins>${{item.price}}</ins>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </section>
+    <app-shelf v-if="$store.state.products" :data="$store.state.products"></app-shelf>
 </template>
 
 <script>
+    import AppShelf from '@/components/shelf'
+
     export default {
         // eslint-disable-next-line vue/multi-word-component-names
-        name: 'app-home'      
+        name: 'app-home',
+        components: {
+            AppShelf
+        },        
     }
 </script>
 <style src="./style.scss" lang="scss"></style>
