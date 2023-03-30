@@ -1,4 +1,5 @@
 <template>
+  <app-spinner></app-spinner>
   <metainfo>
     <template v-slot:title="{ content }">{{ content }}</template>
   </metainfo>
@@ -12,13 +13,15 @@
 <script>
 import AppHeader from './components/header'
 import AppFooter from './components/footer'
+import AppSpinner from './components/spinner'
 import { useStore } from 'vuex'
 
 export default {
   name: 'App',
   components: {
     AppFooter,
-    AppHeader
+    AppHeader,
+    AppSpinner
   },
   mounted() {
     const store = useStore()

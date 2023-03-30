@@ -12,12 +12,17 @@
     </section> <!-- End Page title area -->        
     <section v-if="results.length" class="maincontent-area">
         <div class="container pt-5">
-            <select class="mb-3 p-2 col-3" v-model="filter" @change="sort">
-                <option value="">Filtro</option>
-                <option value="title">Title</option>
-                <option value="price">Price</option>
-                <option value="rating">Rating</option>
-            </select>
+            <span class="d-flex align-items-center">
+                <p>Filtro: </p>
+                <span class="select-style ms-3 mb-3">
+                    <select class="filter" v-model="filter" @change="sort">
+                        <option value="">Selecione uma opção</option>
+                        <option value="title">Title</option>
+                        <option value="price">Price</option>
+                        <option value="rating">Rating</option>
+                    </select>                    
+                </span>
+            </span>
             <ul class="d-flex col-12 flex-wrap product-carousel row p-0">
                 <li class="single-product col-12 col-md-6 col-lg-4 align-items-stretch pb-4" v-for="item in results" :key="item.id">
                     <div class="product-f-image">
