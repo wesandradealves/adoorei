@@ -4,7 +4,8 @@ export const store = createStore({
   state () {
     return {
         products: null,
-        cart: []
+        cart: [],
+        isLoading: false
     }
   },
   mutations: {
@@ -17,30 +18,36 @@ export const store = createStore({
     },    
     setData (state, payload) {
       state.products = payload
-    }    
+    },
+    setLoading(state) {
+      state.isLoading = !state.isLoading
+    } 
   },
   actions: {
     async GetAllProducts (context) {  
+        context.commit('setLoading')
         try {
             const response = await fetch(`${process.env.VUE_APP_BASE_API}/products`).then((res) => res.json())
             if(response) context.commit('setData', response)
         } catch (error) {
           console.log(error);
         } finally {
-          // console.log(context.state)
+          context.commit('setLoading')
         }      
     },     
-    async GetSingleProduct (payload) {  
+    async GetSingleProduct (context, payload) {  
+      context.commit('setLoading')
       try {
           const response = await fetch(`${process.env.VUE_APP_BASE_API}/products/${payload}`).then((res) => res.json())
           return response
       } catch (error) {
         console.log(error);
       } finally {
-        // console.log(context.state)
+        context.commit('setLoading')
       }      
     }, 
     addToCart (context, payload) {  
+      context.commit('setLoading')
       let cart = context.state.cart;
       let item = cart.find(i => i.id == payload.id)
 
@@ -49,12 +56,14 @@ export const store = createStore({
         item.quantity = payload.quantity
         context.commit('increaseQuantity', item)
       }
+      context.commit('setLoading')
     }, 
     removeFromCart (context, payload) {  
+      context.commit('setLoading')
       let cart = context.state.cart;
       let item = cart.find(i => i.id == payload.id)
 
-      if(item) context.state.cart = cart.filter(function(i) { return i.id !== item.id })
+      if(item) context.state.cart = cart.filter(function(i) { return i.id !== item.id }), context.commit('setLoading')
     }
   },
   getters: {
